@@ -18,9 +18,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
-import javax.swing.event.SwingPropertyChangeSupport;
 
 /**
  * Canvas for mathematical plots.
@@ -88,11 +86,6 @@ final class Canvas {
     private Color titleColor = DEFAULT_TITLE_COLOR;
 
     /**
-     * Notify Swing listeners when a property changes.
-     */
-    private SwingPropertyChangeSupport pcs = new SwingPropertyChangeSupport(this, true);
-
-    /**
      * Constructor
      */
     Canvas(double[] lowerBound, double[] upperBound) {
@@ -150,23 +143,17 @@ final class Canvas {
     }
 
     Canvas setTitle(String title) {
-        PropertyChangeEvent event = new PropertyChangeEvent(this, "title", this.title, title);
         this.title = title;
-        pcs.firePropertyChange(event);
         return this;
     }
 
     Canvas setTitleFont(Font titleFont) {
-        PropertyChangeEvent event = new PropertyChangeEvent(this, "titleFont", this.titleFont, titleFont);
         this.titleFont = titleFont;
-        pcs.firePropertyChange(event);
         return this;
     }
 
     Canvas setTitleColor(Color titleColor) {
-        PropertyChangeEvent event = new PropertyChangeEvent(this, "titleColor", this.titleColor, titleColor);
         this.titleColor = titleColor;
-        pcs.firePropertyChange(event);
         return this;
     }
 
@@ -216,23 +203,17 @@ final class Canvas {
      * Sets the label/legend of an axis.
      */
     private Canvas setAxisLabel(int i, String label) {
-        PropertyChangeEvent event = new PropertyChangeEvent(this, "axisLabel", axis[i].getLabel(), label);
         axis[i].setLabel(label);
-        pcs.firePropertyChange(event);
         return this;
     }
 
     private Canvas setAxisFont(int i, Font font) {
-        PropertyChangeEvent event = new PropertyChangeEvent(this, "axisFont", axis[i].getFont(), font);
         axis[i].setFont(font);
-        pcs.firePropertyChange(event);
         return this;
     }
 
     private Canvas setAxisColor(int i, Color color) {
-        PropertyChangeEvent event = new PropertyChangeEvent(this, "axisColor", axis[i].getColor(), color);
         axis[i].setColor(color);
-        pcs.firePropertyChange(event);
         return this;
     }
 
@@ -240,21 +221,16 @@ final class Canvas {
      * Add a graphical shape to the canvas.
      */
     void add(Plot p) {
-        PropertyChangeEvent event = new PropertyChangeEvent(this, "addPlot", this, p);
         shapes.add(p);
         extendBound(p.getLowerBound(), p.getUpperBound());
-        pcs.firePropertyChange(event);
     }
 
     /**
      * Extend lower and upper bounds.
      */
     void extendBound(double[] lowerBound, double[] upperBound) {
-        PropertyChangeEvent event = new PropertyChangeEvent(this, "extendBound", this,
-                new double[][] { lowerBound, upperBound });
         base.extendBound(lowerBound, upperBound);
         resetAxis();
-        pcs.firePropertyChange(event);
     }
 
     /**
